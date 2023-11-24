@@ -48,6 +48,8 @@ while run:
         mouseX, mouseY = pygame.mouse.get_pos()
         Grid.HandleMouse(mouseX, mouseY)
 
+    print("test")
+
     pygame.display.update()
 
 pygame.quit()
