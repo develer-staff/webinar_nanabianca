@@ -14,7 +14,8 @@ pygame.init()
 pygame.display.set_caption("CONWAY'S GAME OF LIFE")
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-fps = 30
+fps = 10
+font = pygame.font.SysFont("Arial", 30)
 
 black = (0, 0, 0)
 blue = (0, 121, 150)
@@ -29,6 +30,13 @@ Grid.random2d_array()
 
 pause = False
 run = True
+
+
+def drawFpsLabel(fps, font):
+    label = font.render(str(fps), 1, (255, 0, 0))
+    screen.blit(label, (30, 30))
+
+
 while run:
     clock.tick(fps)
     screen.fill(black)
@@ -41,8 +49,13 @@ while run:
                 run = False
             if event.key == pygame.K_SPACE:
                 pause = not pause
+            if event.key == pygame.K_LEFT:
+                fps -= 5
+            if event.key == pygame.K_RIGHT:
+                fps += 5
 
     Grid.Conway(off_color=white, on_color=blue1, surface=screen, pause=pause)
+    drawFpsLabel(fps, font)
 
     if pygame.mouse.get_pressed()[0]:
         mouseX, mouseY = pygame.mouse.get_pos()
