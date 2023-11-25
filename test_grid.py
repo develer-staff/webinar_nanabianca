@@ -1,3 +1,6 @@
+import os
+from unittest import mock
+
 import numpy as np
 
 import grid
@@ -103,3 +106,43 @@ def test_reproduction_one_cell():
 
     # Reproduction: Dead cell becomes live cell
     assert g.grid_array[5][5] == 1
+
+
+def test_save():
+    scale = 1
+    w, h = 3, 3
+    g = grid.Grid(w, h, scale, 0)
+    g.random2d_array()
+
+    g.save()
+
+    assert g.grid_array.all() == np.loadtxt("test_grid").all()
+
+    # cleanup test file
+    os.remove("test_grid")
+
+
+def test_load():
+    scale = 1
+    w, h = 3, 3
+    g = grid.Grid(w, h, scale, 0)
+
+    g.load("test_load_grid")
+
+    assert g.grid_array.all() == np.loadtxt("test_load_grid").all()
+
+
+def test_reset():
+    scale = 1
+    w, h = 3, 3
+    g = grid.Grid(w, h, scale, 0)
+    g.random2d_array()
+
+    og = g.grid_array
+
+    # do a couple of iterations to change the grid
+    g.evolve()
+    g.evolve()
+
+    g.reset()
+    assert og.all() == g.grid_array.all()
