@@ -20,18 +20,19 @@ class Grid:
             for y in range(self.columns):
                 self.grid_array[x][y] = random.randint(0, 1)
 
-    def evolve(self, next):
+    def evolve(self):
+        next_state = np.ndarray(shape=(self.size))
         for x in range(self.rows):
             for y in range(self.columns):
                 state = self.grid_array[x][y]
                 neighbours = self.get_neighbours(x, y)
                 if state == 0 and neighbours == 3:
-                    next[x][y] = 1
+                    next_state[x][y] = 1
                 elif state == 1 and (neighbours < 2 or neighbours > 3):
-                    next[x][y] = 0
+                    next_state[x][y] = 0
                 else:
-                    next[x][y] = state
-        self.grid_array = next
+                    next_state[x][y] = state
+        self.grid_array = next_state
 
     def Conway(self, off_color, on_color, surface, pause):
         for x in range(self.rows):
@@ -62,9 +63,8 @@ class Grid:
                         ],
                     )
 
-        next = np.ndarray(shape=(self.size))
         if pause == False:
-            self.evolve(next)
+            self.evolve()
 
     def HandleMouse(self, x, y):
         _x = x // self.scale

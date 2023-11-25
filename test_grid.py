@@ -33,11 +33,11 @@ def test_evolve_empty():
     g = grid.Grid(w, h, scale, 0)
     g.grid_array.fill(0)
 
-    next = np.ndarray(shape=(g.size))
-    g.evolve(next)
+    g.evolve()
 
+    empty = np.ndarray(shape=(g.size))
     # No evolution from empty grid
-    assert np.array_equal(next, g.grid_array)
+    assert np.array_equal(empty, g.grid_array)
 
 
 def test_underpopulation_one_cell():
@@ -49,8 +49,7 @@ def test_underpopulation_one_cell():
 
     g.grid_array[5][5] = 1
 
-    next = np.ndarray(shape=(g.size))
-    g.evolve(next)
+    g.evolve()
 
     # No neighbours for single cell
     assert g.get_neighbours(5, 5) == 0
@@ -76,8 +75,7 @@ def test_overpopulation_one_cell():
 
     assert g.get_neighbours(5, 5) == 4
 
-    next = np.ndarray(shape=(g.size))
-    g.evolve(next)
+    g.evolve()
 
     # Overpopulation: Single cell dies
     assert g.grid_array[5][5] == 0
@@ -99,8 +97,7 @@ def test_reproduction_one_cell():
 
     assert g.get_neighbours(5, 5) == 3
 
-    next = np.ndarray(shape=(g.size))
-    g.evolve(next)
+    g.evolve()
 
     # Reproduction: Dead cell becomes live cell
     assert g.grid_array[5][5] == 1
