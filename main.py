@@ -41,6 +41,9 @@ while run:
                 run = False
             if event.key == pygame.K_SPACE:
                 pause = not pause
+            if event.key == pygame.K_n:
+                if pause:
+                    Grid.evolve()
 
     Grid.Conway(off_color=white, on_color=blue1, surface=screen, pause=pause)
 
