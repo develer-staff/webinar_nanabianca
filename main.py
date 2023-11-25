@@ -1,8 +1,17 @@
+import argparse
 import os
 
 import pygame
 
 import grid
+
+parser = argparse.ArgumentParser(
+    prog="Conway game of life", description="Pygame emulation of Conway game of life"
+)
+parser.add_argument(
+    "-f", "--filename", required=False, help="path to grid file to load"
+)
+args = parser.parse_args()
 
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 
@@ -24,10 +33,9 @@ white = (255, 255, 255)
 scaler = 30
 offset = 1
 
-Grid = grid.Grid(width, height, scaler, offset)
-Grid.random2d_array()
+Grid = grid.Grid(width, height, scaler, offset, args.filename)
 
-pause = False
+pause = True
 run = True
 while run:
     clock.tick(fps)
@@ -41,6 +49,10 @@ while run:
                 run = False
             if event.key == pygame.K_SPACE:
                 pause = not pause
+            if event.key == pygame.K_s:
+                Grid.save()
+            if event.key == pygame.K_r:
+                Grid.reset()
 
     Grid.Conway(off_color=white, on_color=blue1, surface=screen, pause=pause)
 

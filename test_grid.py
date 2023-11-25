@@ -108,12 +108,15 @@ def test_reproduction_one_cell():
     assert g.grid_array[5][5] == 1
 
 
-def test_save():
+@mock.patch("uuid.uuid4")
+def test_save(mock_uuid4):
     scale = 1
     w, h = 3, 3
     g = grid.Grid(w, h, scale, 0)
     g.random2d_array()
 
+    # remove uuid randomness
+    mock_uuid4.return_value = "test"
     g.save()
 
     assert g.grid_array.all() == np.loadtxt("test_grid").all()
