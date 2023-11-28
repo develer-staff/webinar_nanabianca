@@ -15,6 +15,19 @@ def test_HandleMouse():
 
     assert g.grid_array[x][y] == 1
 
+def test_HandleMouse_SwitchOff():
+    scale = 1
+    w, h = 10, 10
+
+    g = grid.Grid(w, h, scale, 0)
+    g.grid_array.fill(0)
+
+    x, y = 5, 5
+    g.grid_array[x][y] = 1
+
+    g.HandleMouse(x, y)
+
+    assert g.grid_array[x][y] == 0
 
 def test_NumColsRows():
     scale = 2
