@@ -36,6 +36,8 @@ def test_evolve_empty():
     g.evolve()
 
     empty = np.ndarray(shape=(g.size))
+    empty.fill(0)
+
     # No evolution from empty grid
     assert np.array_equal(empty, g.grid_array)
 
