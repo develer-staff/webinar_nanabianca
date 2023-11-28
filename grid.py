@@ -96,7 +96,6 @@ class Grid:
         np.savetxt(str(uuid.uuid4()) + "_grid", self.grid_array, fmt="%d")
 
     def load(self, filename):
-        print(filename)
         self.grid_array = np.loadtxt(filename)
 
     def reset(self):
