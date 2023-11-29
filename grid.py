@@ -79,7 +79,8 @@ class Grid:
         _y = y // self.scale
 
         if self.grid_array[_x][_y] != None:
-            self.grid_array[_x][_y] = 1
+            # Flip the cell's state
+            self.grid_array[_x][_y] = 1 - self.grid_array[_x][_y]
 
     def get_neighbours(self, x, y):
         total = 0
