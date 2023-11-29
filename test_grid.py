@@ -1,3 +1,6 @@
+import os
+from unittest import mock
+
 import numpy as np
 
 import grid
@@ -15,6 +18,19 @@ def test_HandleMouse():
 
     assert g.grid_array[x][y] == 1
 
+def test_HandleMouse_SwitchOff():
+    scale = 1
+    w, h = 10, 10
+
+    g = grid.Grid(w, h, scale, 0)
+    g.grid_array.fill(0)
+
+    x, y = 5, 5
+    g.grid_array[x][y] = 1
+
+    g.HandleMouse(x, y)
+
+    assert g.grid_array[x][y] == 0
 
 def test_NumColsRows():
     scale = 2
@@ -36,6 +52,8 @@ def test_evolve_empty():
     g.evolve()
 
     empty = np.ndarray(shape=(g.size))
+    empty.fill(0)
+
     # No evolution from empty grid
     assert np.array_equal(empty, g.grid_array)
 
@@ -101,3 +119,46 @@ def test_reproduction_one_cell():
 
     # Reproduction: Dead cell becomes live cell
     assert g.grid_array[5][5] == 1
+
+
+@mock.patch("uuid.uuid4")
+def test_save(mock_uuid4):
+    scale = 1
+    w, h = 3, 3
+    g = grid.Grid(w, h, scale, 0)
+    g.random2d_array()
+
+    # remove uuid randomness
+    mock_uuid4.return_value = "test"
+    g.save()
+
+    assert g.grid_array.all() == np.loadtxt("test_grid").all()
+
+    # cleanup test file
+    os.remove("test_grid")
+
+
+def test_load():
+    scale = 1
+    w, h = 3, 3
+    g = grid.Grid(w, h, scale, 0)
+
+    g.load("test_load_grid")
+
+    assert g.grid_array.all() == np.loadtxt("test_load_grid").all()
+
+
+def test_reset():
+    scale = 1
+    w, h = 3, 3
+    g = grid.Grid(w, h, scale, 0)
+    g.random2d_array()
+
+    og = g.grid_array
+
+    # do a couple of iterations to change the grid
+    g.evolve()
+    g.evolve()
+
+    g.reset()
+    assert og.all() == g.grid_array.all()
