@@ -1,11 +1,12 @@
 import random
+import uuid
 
 import numpy as np
 import pygame
 
 
 class Grid:
-    def __init__(self, width, height, scale, offset):
+    def __init__(self, width, height, scale, offset, filename=None):
         self.scale = scale
 
         self.columns = int(height / scale)
@@ -14,6 +15,13 @@ class Grid:
         self.size = (self.rows, self.columns)
         self.grid_array = np.ndarray(shape=(self.size))
         self.offset = offset
+
+        if filename:
+            self.load(filename)
+        else:
+            self.random2d_array()
+
+        self.og_grid_array = self.grid_array
 
     def random2d_array(self):
         for x in range(self.rows):
@@ -84,3 +92,12 @@ class Grid:
 
         total -= self.grid_array[x][y]
         return total
+
+    def save(self):
+        np.savetxt(str(uuid.uuid4()) + "_grid", self.grid_array, fmt="%d")
+
+    def load(self, filename):
+        self.grid_array = np.loadtxt(filename)
+
+    def reset(self):
+        self.grid_array = self.og_grid_array
