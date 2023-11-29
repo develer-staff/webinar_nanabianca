@@ -49,6 +49,9 @@ while run:
                 run = False
             if event.key == pygame.K_SPACE:
                 pause = not pause
+            if event.key == pygame.K_n:
+                if pause:
+                    Grid.evolve()
             if event.key == pygame.K_s:
                 Grid.save()
             if event.key == pygame.K_r:
