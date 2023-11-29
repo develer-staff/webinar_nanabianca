@@ -58,7 +58,8 @@ while run:
             if event.key == pygame.K_SPACE:
                 pause = not pause
             if event.key == pygame.K_LEFT:
-                fps -= 5
+                if fps > 5:
+                    fps -= 5
             if event.key == pygame.K_RIGHT:
                 fps += 5
             if event.key == pygame.K_n:
